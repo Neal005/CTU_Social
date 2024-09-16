@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/CTU_Social_client/static/css/main.09e118ad.css",
+    "main.js": "/CTU_Social_client/static/js/main.6362a581.js",
+    "static/media/CTU-Logo.png": "/CTU_Social_client/static/media/CTU-Logo.e08c2c37369fe893b935.png",
+    "static/media/userprofile.png": "/CTU_Social_client/static/media/userprofile.0d14c6999b4a5c8e86a7.png",
+    "index.html": "/CTU_Social_client/index.html",
+    "main.09e118ad.css.map": "/CTU_Social_client/static/css/main.09e118ad.css.map",
+    "main.6362a581.js.map": "/CTU_Social_client/static/js/main.6362a581.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.09e118ad.css",
+    "static/js/main.6362a581.js"
+  ]
+}
