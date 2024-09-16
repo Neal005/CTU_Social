@@ -50,7 +50,7 @@ const Login = () => {
               register={register("email", {
                 required: "Địa chỉ Email là bắt buộc!",
                 pattern: {
-                  value: /^[A-Za-z0-9]+@ctu\.edu\.vn$/,
+                  value: /^[A-Za-z0-9]+(@ctu\.edu\.vn)|(@+[A-Za-z]+\.+ctu\.edu\.vn)$/,
                   message: "Email phải là mail của Đại Học Cần Thơ!"
                 }
               })}
