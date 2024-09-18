@@ -6,6 +6,7 @@ import TextInput from "./TextInput";
 import Loading from "./Loading";
 import CustomButton from "./CustomButton";
 import { UpdateProfile } from "../redux/userSlice";
+import { NoProfile } from "../assets";
 
 const EditProfile = () => {
   const { user } = useSelector((state) => state.user);
@@ -63,6 +64,22 @@ const EditProfile = () => {
               className='px-4 sm:px-6 flex flex-col gap-3 2xl:gap-6'
               onSubmit={handleSubmit(onSubmit)}
             >
+               <label htmlFor='imgUpload' className='cursor-pointer my-4'>
+                <input
+                  type='file'
+                  className='hidden'
+                  id='imgUpload'
+                  onChange={(e) => handleSelect(e)}
+                  accept='.jpg, .png, .jpeg'
+                />
+                <img
+                  src={user?.profileUrl ?? NoProfile}
+                  alt='user profile'
+                  className='w-20 h-20 rounded-full object-cover mx-auto'
+                />
+              </label>
+
+
               <TextInput
                 name='firstName'
                 label='First Name'
@@ -108,19 +125,6 @@ const EditProfile = () => {
                 })}
                 error={errors.location ? errors.location?.message : ""}
               />
-
-              <label
-                className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer my-4'
-                htmlFor='imgUpload'
-              >
-                <input
-                  type='file'
-                  className=''
-                  id='imgUpload'
-                  onChange={(e) => handleSelect(e)}
-                  accept='.jpg, .png, .jpeg'
-                />
-              </label>
 
               {errMsg?.message && (
                 <span

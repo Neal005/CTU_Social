@@ -8,6 +8,7 @@ import PostCard from "./PostCard";
 import EditProfile from "./EditProfile";
 import * as FacultiesSelector from "./FacultiesSelector"
 import SelectInput from "./SelectInput";
+import Menu from "./Menu";
 
 export {
   Loading,
@@ -19,5 +20,6 @@ export {
   PostCard,
   EditProfile,
   FacultiesSelector,
-  SelectInput
+  SelectInput,
+  Menu
 };

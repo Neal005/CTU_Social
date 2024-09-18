@@ -16,6 +16,7 @@ import { NoProfile } from "../assets";
 import { BsFiletypeGif, BsPersonFillAdd } from "react-icons/bs";
 import { BiImages, BiSolidVideo } from "react-icons/bi";
 import { useForm } from "react-hook-form";
+import { CiFileOn } from "react-icons/ci";
 
 const Home = () => {
   const { user, edit } = useSelector((state) => state.user);
@@ -108,10 +109,10 @@ const Home = () => {
                     onChange={(e) => setFile(e.target.files[0])}
                     className='hidden'
                     id='videoUpload'
-                    accept='.mp4, .wav'
+                    accept='*'
                   />
-                  <BiSolidVideo />
-                  <span>Video</span>
+                  <CiFileOn />
+                  <span>File</span>
                 </label>
 
                 <label
