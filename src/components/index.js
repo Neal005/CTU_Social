@@ -9,6 +9,8 @@ import EditProfile from "./EditProfile";
 import * as FacultiesSelector from "./FacultiesSelector"
 import SelectInput from "./SelectInput";
 import Menu from "./Menu";
+import ImageDetail from "./ImageDetail";
+
 
 export {
   Loading,
@@ -21,5 +23,6 @@ export {
   EditProfile,
   FacultiesSelector,
   SelectInput,
-  Menu
+  Menu,
+  ImageDetail
 };

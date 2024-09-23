@@ -9,6 +9,7 @@ import { UpdateProfile } from "../redux/userSlice";
 import { NoProfile } from "../assets";
 
 const EditProfile = () => {
+  const { theme } = useSelector((state) => state.theme);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [errMsg, setErrMsg] = useState("");
@@ -33,6 +34,11 @@ const EditProfile = () => {
     setPicture(e.target.files[0]);
   };
 
+  const [selectedGender, setSelectedGender] = useState(user?.gender || "");
+  const handleGenderChange = (event) => {
+    setSelectedGender(event.target.value);
+  };
+
   return (
     <>
       <div className='fixed z-50 inset-0 overflow-y-auto'>
@@ -53,7 +59,7 @@ const EditProfile = () => {
                 htmlFor='name'
                 className='block font-medium text-xl text-ascent-1 text-left'
               >
-                Edit Profile
+                Chỉnh sửa thông tin cá nhân
               </label>
 
               <button className='text-ascent-1' onClick={handleClose}>
@@ -64,7 +70,11 @@ const EditProfile = () => {
               className='px-4 sm:px-6 flex flex-col gap-3 2xl:gap-6'
               onSubmit={handleSubmit(onSubmit)}
             >
-               <label htmlFor='imgUpload' className='cursor-pointer my-4'>
+               <label htmlFor='imgUpload'
+                className={`
+                  cursor-pointer my-4
+                `}
+              >
                 <input
                   type='file'
                   className='hidden'
@@ -72,59 +82,65 @@ const EditProfile = () => {
                   onChange={(e) => handleSelect(e)}
                   accept='.jpg, .png, .jpeg'
                 />
+
                 <img
                   src={user?.profileUrl ?? NoProfile}
                   alt='user profile'
-                  className='w-20 h-20 rounded-full object-cover mx-auto'
+                  className={`
+                    ${window.innerWidth < 768 ? 'w-[40%]' : 'w-[35%]'}
+                    rounded-full object-cover mx-auto transition duration-300 ease-in-out hover:scale-110
+                  `}
                 />
               </label>
 
-
               <TextInput
                 name='firstName'
-                label='First Name'
-                placeholder='First Name'
+                label={<span className="font-bold">Tên</span>}
+                placeholder='Tên'
                 type='text'
                 styles='w-full'
                 register={register("firstName", {
-                  required: "First Name is required!",
+                  required: "Tên là bắt buộc!",
                 })}
                 error={errors.firstName ? errors.firstName?.message : ""}
               />
 
               <TextInput
-                label='Last Name'
-                placeholder='Last Name'
+                label={<span className="font-bold">Họ</span>}
+                placeholder='Họ'
                 type='lastName'
                 styles='w-full'
                 register={register("lastName", {
-                  required: "Last Name do no match",
+                  required: "Họ không khớp!",
                 })}
                 error={errors.lastName ? errors.lastName?.message : ""}
               />
 
               <TextInput
-                name='profession'
-                label='Profession'
-                placeholder='Profession'
+                name='bio'
+                label={<span className="font-bold">Bio</span>}
+                placeholder='Bio'
                 type='text'
                 styles='w-full'
-                register={register("profession", {
-                  required: "Profession is required!",
-                })}
-                error={errors.profession ? errors.profession?.message : ""}
+                register={register("bio")}
+                error={errors.bio ? errors.bio?.message : ""}
+                defaultValue={user?.bio || ""}
               />
 
-              <TextInput
-                label='Location'
-                placeholder='Location'
-                type='text'
-                styles='w-full'
-                register={register("location", {
-                  required: "Location do no match",
-                })}
-                error={errors.location ? errors.location?.message : ""}
-              />
+              <label>
+                <span className={`font-bold text-ascent-2 text-sm mb-2 ${theme === 'dark' ? 'text-gray' : 'text-black'}`}>Giới tính</span>
+                <select
+                  id="gender"
+                  value={selectedGender}
+                  onChange={handleGenderChange}
+                  className={`bg-secondary border-[#66666690] mb-2 outline-none text-sm text-ascent-2 placeholder:text-[#666] w-full border rounded-md py-2 px-3 mt-1`}
+                >
+                  <option value="" className={`text-ascent-2 text-sm mb-2 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Chọn giới tính</option>
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                  <option value="Khác">Khác</option>
+                </select>
+              </label>
 
               {errMsg?.message && (
                 <span

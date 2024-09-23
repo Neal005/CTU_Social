@@ -37,10 +37,16 @@ const Menu = ({ user }) => {
             <Link to="/notifications">Notifications</Link>
         </li>
         <li className="px-4 py-2 hover:bg-gray-100">
+            <Link to="/friends/${user._id}">Friends</Link>
+        </li>
+        <li className="px-4 py-2 hover:bg-gray-100">
             <Link to="/messages/${user._id}">Messages</Link>
         </li>
         <li className="px-4 py-2 hover:bg-gray-100">
             <Link to="/groups">Groups</Link>
+        </li>
+        <li className="px-4 py-2 hover:bg-gray-100">
+            <Link to="/settings/${user._id}">Settings</Link>
         </li>
         </ul>
     </div>

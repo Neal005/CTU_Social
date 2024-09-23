@@ -6,7 +6,9 @@ const SelectInput = React.forwardRef(
       <div className="w-full flex flex-col mt-2">
         {label && (
           <p className={`text-ascent-2 text-sm mb-2 ${labelStyles}`}>
-            {label}
+            {<span className="font-bold">
+              {label}
+            </span>}
           </p>
         )}
 
@@ -15,7 +17,7 @@ const SelectInput = React.forwardRef(
             ref={ref}
             value={value}
             onChange={onChange}
-            className={`bg-secondary rounded border border-[#66666690] outline-none text-sm text-ascent-1 px-4 py-3 placeholder:text-[#666] ${styles}`}
+            className={`bg-secondary rounded border border-[#66666690] mb-2 outline-none text-sm text-ascent-2 px-4 py-3 placeholder:text-[#666] ${styles}`}
             aria-invalid={error ? "true" : "false"}
           >
             {options.map((option) => (

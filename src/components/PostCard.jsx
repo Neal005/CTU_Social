@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import { NoProfile } from "../assets";
 import { BiComment, BiLike, BiSolidLike } from "react-icons/bi";
@@ -9,6 +9,8 @@ import TextInput from "./TextInput";
 import Loading from "./Loading";
 import CustomButton from "./CustomButton";
 import { postComments } from "../assets/data";
+import { useSelector } from "react-redux";
+import { ImageDetail } from "../components";
 
 const ReplyCard = ({ reply, user, handleLike }) => {
   return (
@@ -119,6 +121,7 @@ const CommentForm = ({ user, id, replyAt, getComments }) => {
 };
 
 const PostCard = ({ post, user, deletePost, likePost }) => {
+  const { theme } = useSelector((state) => state.theme);
   const [showAll, setShowAll] = useState(0);
   const [showReply, setShowReply] = useState(0);
   const [comments, setComments] = useState([]);
@@ -134,8 +137,22 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
   };
   const handleLike = async () => {};
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleImageClick = () => {
+    setShowImageModal(true);
+  };
+  const [showImageModal, setShowImageModal] = useState(false);
+
   return (
     <div className='mb-2 bg-primary p-4 rounded-xl'>
+      {showImageModal && (
+        <ImageDetail
+          images={post.image} 
+          onClose={() => setShowImageModal(false)} 
+        />
+      )}
       <div className='flex gap-3 items-center mb-2'>
         <Link to={"/profile/" + post?.userId?._id}>
           <img
@@ -149,10 +166,16 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
           <div className=''>
             <Link to={"/profile/" + post?.userId?._id}>
               <p className='font-medium text-lg text-ascent-1'>
-                {post?.userId?.firstName} {post?.userId?.lastName}
+                {post?.userId?.lastName} {post?.userId?.firstName}
               </p>
             </Link>
-            <span className='text-ascent-2'>{post?.userId?.location}</span>
+            <span className='text-ascent-2'>
+              {post?.userId?.major ? (
+                <>{post?.userId?.faculty}, {post?.userId?.major}</>
+                ) : (
+                <>{post?.userId?.faculty || post?.userId?.major}</>
+              )}
+      </span>
           </div>
 
           <span className='text-ascent-2'>
@@ -186,12 +209,47 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
         </p>
 
         {post?.image && (
-          <img
-            src={post?.image}
-            alt='post image'
-            className='w-full mt-2 rounded-lg'
-          />
+          <div className='relative'>
+            <div className={`grid ${
+              post?.image.length > 1
+                ? (
+                  post?.image.length === 3 ? 'grid-cols-2 grid-rows-2' :
+                  post?.image.length > 4 ? 'grid-cols-2' :
+                  (post?.image.length % 2 === 0 ? 'grid-cols-2' : '')
+                )
+                : ''} gap-2`} >
+
+              {post?.image.slice(0, 4).map((img, index) => (
+                <div key={index}
+                  className={`
+                    ${post?.image.length > 4 ? 'relative' : 'flex'}
+                    overflow-hidden bg-cover bg-no-repeat
+                    ${post?.image.length === 3 && index === 2 ? 'col-span-2' : ''} 
+                  `}
+                >
+                  <img
+                    src={img}
+                    alt={`post image ${index}`}
+                    className='w-full mt-2 rounded-lg transition duration-300 ease-in-out hover:scale-110'
+                    style={{ opacity: index === post?.image.slice(0, 4).length - 1 && post?.image.length > 4 ? '0.5' : '1' }}
+                    onClick={handleImageClick}
+                  />
+
+                  {post?.image.length > 4 && index === post?.image.slice(0, 4).length - 1 && (
+                    <div
+                      className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg transition duration-100 ease-in-out hover:scale-150'
+                      onClick={() => handleImageClick(post.image)}
+                    >
+                      <span className={`font-bold text-lg ${theme === 'dark' ? 'text-white' : ''}`}>+{post?.image.length - 4}</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
+
+
       </div>
 
       <div

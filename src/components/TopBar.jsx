@@ -7,7 +7,7 @@ import CustomButton from "./CustomButton";
 import Menu from "./Menu";
 import { useForm } from "react-hook-form";
 import { BsMoon, BsSunFill } from "react-icons/bs";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import { IoNotificationsOutline } from "react-icons/io5";
 import { SetTheme } from "../redux/theme";
 import { Logout } from "../redux/userSlice";
 import { BgImage } from "../assets";
@@ -47,7 +47,10 @@ const TopBar = () => {
         <Link to='/' className='flex gap-2 items-center'>
             <img src={BgImage} className='lg:hidden w-9 h-9' />
         </Link>
-        <IoIosMenu className='lg:hidden text-2xl ml-2' onClick={() => setShowMenu(!showMenu)}/>
+        <IoIosMenu 
+          className={`lg:hidden text-2xl ml-2 ${theme === 'dark' ? 'text-white' : ''}`} 
+          onClick={() => setShowMenu(!showMenu)}
+        />
       </div>
 
       {/* Mobile Menu Dropdown */}
@@ -60,7 +63,7 @@ const TopBar = () => {
         onSubmit={handleSubmit(handleSearch)}
       >
         <TextInput
-          placeholder='Search...'
+          placeholder='Tìm kiếm...'
           styles='w-[18rem] lg:w-[38rem]  rounded-l-full py-3 '
           register={register("search")}
         />
@@ -77,12 +80,12 @@ const TopBar = () => {
           {theme ? <BsMoon /> : <BsSunFill />}
         </button>
         <div className='hidden lg:flex'>
-        <Link to={`/messages/${user._id}`}> {/* Assuming user._id holds the user ID */}
-            <FaRegMessage />
+          <Link to={`/messages/${user._id}`}>
+              <FaRegMessage />
           </Link>
         </div>
-        <div className='hidden lg:flex'>
-          <IoMdNotificationsOutline />
+        <div className='hidden lg:flex items-center'>
+          <IoNotificationsOutline size={24} />
         </div>
 
         <div>

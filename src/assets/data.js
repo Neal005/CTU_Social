@@ -1,8 +1,30 @@
 export const user = {
   _id: "64df3c064180b81adfe41d4b",
-  firstName: "Code",
-  lastName: "Wave",
-  email: "codewavewithasante@gmail.com",
+  firstName: "Lực",
+  lastName: "Nguyễn Lê Hoàng",
+  email: "lucb2110131@ctu.edu.vn",
+  bio: "50cm",
+  gender: "",
+  faculty: "CNTT&TT",
+  facultyId: "1",
+  major: "Kỹ thuật phần mềm K47",
+  facebook: "https://www.facebook.com",
+  linkedin: "https://www.linkedin.com/",
+  github: "https://github.com/Neal005",
+  groups: [
+    {
+      id: "1",
+      name: "Group 1",
+    },
+    {
+      id: "2",
+      name: "Group 2",
+    },
+    {
+      id: "3",
+      name: "Group 3",
+    }
+  ],
   friends: [
     {
       _id: "64df3aec4180b81adfe41d32",
@@ -16,7 +38,7 @@ export const user = {
       updatedAt: "2023-08-18T09:49:19.475Z",
       __v: 2,
       profileUrl:
-        "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874470/cld-sample.jpg",
+        "/pictures/Neal_Gaming_avt.png"
     },
     {
       _id: "64df39704180b81adfe41d0b",
@@ -36,8 +58,8 @@ export const user = {
       createdAt: "2023-08-18T09:27:12.064Z",
       updatedAt: "2023-08-21T06:46:26.798Z",
       __v: 8,
-      location: "Mumbai, India",
-      profession: "Full-Stack Developer",
+      faculty: "CNTT&TT",
+      major: " Kỹ thuật phần mềm K47",
     },
     {
       _id: "64df424b4a4c0d47b5369f65",
@@ -86,7 +108,7 @@ export const user = {
   createdAt: "2023-08-18T09:38:14.179Z",
   updatedAt: "2023-08-21T06:46:18.258Z",
   profileUrl:
-    "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874454/samples/people/boy-snow-hoodie.jpg",
+    "/pictures/Neal.jpg",
   token: "hZWFmZmU3NmMiLCJpYXQiOjE2OTIwMzY5",
 };
 
@@ -97,15 +119,15 @@ export const friends = [
     lastName: "Bruce",
     email: "john@gmail.com",
     profileUrl:
-      "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874470/cld-sample.jpg",
+      "/pictures/Neal_Gaming_avt.png"
   },
   {
     _id: "64df39704180b81adfe41d0b",
     firstName: "James",
     lastName: "Jackson",
     email: "james@gmail.com",
-    location: "Mumbai, India",
-    profession: "Full-Stack Developer",
+    faculty: "CNTT&TT",
+    major: "Kỹ thuật phần mềm K47",
   },
   {
     _id: "64df424b4a4c0d47b5369f65",
@@ -149,15 +171,26 @@ export const posts = [
     _id: "64e2fe620d7868ecff1a6a86",
     userId: {
       _id: "64df39704180b81adfe41d0b",
-      firstName: "Chris",
-      lastName: "Omar",
-      profileUrl:
-        "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874454/samples/people/boy-snow-hoodie.jpg",
-      location: "New York, USA",
+      firstName: "Lực",
+      lastName: "Nguyễn",
+      profileUrl: "/pictures/Neal.jpg",
+      faculty: "CNTT&TT",
+      major: "Kỹ thuật phần mềm K47",
     },
-    description: "Hello everyone, this is a new video. check it out. thank you",
-    image:
-      "https://res.cloudinary.com/djs3wu5bg/image/upload/v1692597858/SOCIALMEDIA/hdahstpztt1fvobc13st.png",
+    description: "Nice pic!",
+    image: [
+        "/pictures/1 (1).jpg",
+        "/pictures/1 (2).jpg",
+        "/pictures/1 (3).jpg",
+        "/pictures/1 (4).jpg",
+        "/pictures/1 (5).jpg",
+        "/pictures/1 (6).jpg",
+        "/pictures/1 (7).jpg",
+        "/pictures/1 (8).jpg",
+        "/pictures/1 (9).jpg",
+        "/pictures/1 (10).jpg",
+        "/pictures/1 (11).jpg",
+    ],
     likes: ["64df3c064180b81adfe41d4b"],
     comments: [],
     createdAt: "2023-08-21T06:04:18.297Z",
@@ -168,11 +201,12 @@ export const posts = [
     _id: "64e1cdd64baffca670364c8c",
     userId: {
       _id: "64df39704180b81adfe41d0b",
-      firstName: "Love",
-      lastName: "Banks",
+      firstName: "Neal",
+      lastName: "Nguyễn",
       profileUrl:
-        "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874454/samples/people/boy-snow-hoodie.jpg",
-      location: "Mumbai, India",
+        "/pictures/Neal.jpg",
+      faculty: "CNTT&TT",
+      major: "Kỹ thuật phần mềm K46",
     },
     description:
       "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, ",
@@ -196,17 +230,19 @@ export const posts = [
     createdAt: "2023-08-18T10:10:06.969Z",
     updatedAt: "2023-08-21T02:54:01.806Z",
     __v: 0,
-    image:
-      "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874458/samples/imagecon-group.jpg",
+    image:[
+      "/pictures/1 (19).jpg",
+      "/pictures/1 (20).jpg",
+    ]
   },
   {
     _id: "64df43714a4c0d47b5369fef",
     userId: {
       _id: "64df3c064180b81adfe41d4b",
-      firstName: "Code",
-      lastName: "Wave",
+      firstName: "Lực",
+      lastName: "Nguyễn",
       profileUrl:
-        "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874454/samples/people/boy-snow-hoodie.jpg",
+        "/pictures/Neal.jpg",
     },
     description:
       "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, ",
@@ -230,8 +266,11 @@ export const posts = [
     createdAt: "2023-08-18T10:07:24.023Z",
     updatedAt: "2023-08-18T10:11:00.348Z",
     __v: 0,
-    image:
-      "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874457/samples/ecommerce/leather-bag-gray.jpg",
+    image: [
+      "/pictures/1 (12).jpg",
+      "/pictures/1 (13).jpg",
+      "/pictures/1 (14).jpg",
+    ]
   },
   {
     _id: "64df42b04a4c0d47b5369f77",
@@ -252,10 +291,12 @@ export const posts = [
     _id: "64df41114a4c0d47b5369f02",
     userId: {
       _id: "64df3aec4180b81adfe41d32",
-      firstName: "Jomes",
-      lastName: "Gardener",
+      firstName: "Nguyên",
+      lastName: "Lưu Trí",
+      faculty: "CNTT&TT",
+      major: "Kỹ thuật phần mềm K47",
       profileUrl:
-        "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874470/cld-sample.jpg",
+        "/pictures/Nguyen.jpg",
     },
     description:
       " What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.  Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
@@ -269,10 +310,10 @@ export const posts = [
     _id: "64df3ef86c2bd953c7b43193",
     userId: {
       _id: "64df3c064180b81adfe41d4b",
-      firstName: "Code",
-      lastName: "Wave",
+      firstName: "Lực",
+      lastName: "Nguyễn",
       profileUrl:
-        "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874454/samples/people/boy-snow-hoodie.jpg",
+        "/pictures/Neal.jpg",
     },
     description:
       "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, ",
@@ -289,8 +330,13 @@ export const posts = [
     createdAt: "2023-08-18T09:50:48.398Z",
     updatedAt: "2023-08-21T03:36:36.745Z",
     __v: 0,
-    image:
-      "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874455/samples/animals/three-dogs.jpg",
+    image: [
+      "/pictures/1 (15).jpg",
+      "/pictures/1 (16).jpg",
+      "/pictures/1 (17).jpg",
+      "/pictures/1 (18).jpg",
+      "/pictures/1 (19).jpg",
+    ]
   },
   {
     _id: "64df3ed06c2bd953c7b43172",
@@ -309,8 +355,14 @@ export const posts = [
     createdAt: "2023-08-18T09:50:08.431Z",
     updatedAt: "2023-08-21T03:44:36.962Z",
     __v: 0,
-    image:
+    image: [
       "https://res.cloudinary.com/djs3wu5bg/image/upload/v1683874453/samples/bike.jpg",
+      "/pictures/1 (2).jpg",
+      "/pictures/1 (3).jpg",
+      "/pictures/1 (4).jpg",
+      "/pictures/1 (5).jpg",
+      "/pictures/1 (6).jpg"
+    ]
   },
 ];
 
@@ -387,3 +439,157 @@ export const postComments = [
     __v: 1,
   },
 ];
+
+export const faculties = [
+  {
+    id: "1",
+    name: "CNTT&TT",
+    majors: [
+      { 
+        id: "1",
+        name: "Kỹ thuật phần mềm",
+        cuorse: [
+          "K40",
+          "K41",
+          "K42",
+          "K43",
+          "K44",
+          "K45",
+          "K46",
+          "K47",
+          "K48",
+          "K49",
+          "K50"
+        ]
+      },
+      { 
+        id: "2",
+        name: "Công nghệ thông tin",
+        cuorse: [
+          "K40",
+          "K41",
+          "K42",
+          "K43",
+          "K44",
+          "K45",
+          "K46",
+          "K47",
+          "K48",
+          "K49",
+          "K50"
+        ]
+      },
+      {
+        id: "1",
+        name: "Tin học ứng dụng",
+        cuorse: [
+          "K40",
+          "K41",
+          "K42",
+          "K43",
+          "K44",
+          "K45",
+          "K46",
+          "K47"
+        ]
+      },
+    ],
+  
+    activities: [
+      {
+        id: "1",
+        title: "Tiếp Đoàn công tác cục Phòng, Chống HIV/AIDS",
+        image: "https://events.ctu.edu.vn/images/uploads/2024/tdct-phongchong-HIV.jpg",
+        link: "https://events.ctu.edu.vn/tiep-doan-trong-nuoc/tiep-doan-cong-tac-cuc-phong-chong-hiv-aids"
+      },
+      {
+        id: "2",
+        title: "title 2",
+        image: "/pictures/1 (2).jpg",
+        link: "https://events.ctu.edu.vn/"
+      },
+      {
+        id: "3",
+        title: "title 3",
+        image: "/pictures/1 (3).jpg",
+        link: "https://events.ctu.edu.vn/"
+      }
+    ]
+  },
+
+  {
+    id: "2",
+    name: "Kinh tế",
+    majors: [
+      { 
+        id: "4",
+        name: "Kinh tế 1",
+        cuorse: [
+          "K40",
+          "K41",
+          "K42",
+          "K43",
+          "K44",
+          "K45",
+          "K46",
+          "K47",
+          "K48",
+          "K49",
+          "K50"
+        ]
+      },
+      { 
+        id: "5",
+        name: "Kinh tế 2",
+        cuorse: [
+          "K40",
+          "K41",
+          "K42",
+          "K43",
+          "K44",
+          "K45",
+          "K46",
+          "K47",
+          "K48",
+          "K49",
+          "K50"
+        ]
+      },
+      {
+        id: "6",
+        name: "Kinh tế 3",
+        cuorse: [
+          "K40",
+          "K41",
+          "K42",
+          "K43",
+          "K44",
+          "K45",
+          "K46",
+          "K47"
+        ]
+      },
+    ],
+  
+    activities: [
+      {
+        id: "4",
+        title: "Lễ trao bằng tốt nghiệp đại học chính quy Trường Kinh tế",
+        image: "https://events.ctu.edu.vn/images/uploads/2024/letraobang-TKT.jpg",
+        link: "https://events.ctu.edu.vn/le-hoi/le-trao-bang-tot-nghiep-dai-hoc-chinh-quy-truong-kinh-te"
+      },
+      {
+        id: "5",
+        title: "title 2",
+        image: "/pictures/1 (5).jpg",
+        link: "https://events.ctu.edu.vn/"
+      },
+      {
+        id: "6",
+        title: "title 3",
+        image: "/pictures/1 (6).jpg",
+        link: "https://events.ctu.edu.vn/"
+      }
+    ]
+  }
+]

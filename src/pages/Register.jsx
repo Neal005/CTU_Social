@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useForm, trigger } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { TbSocial } from "react-icons/tb";
 import { BsShare } from "react-icons/bs";
 import { AiOutlineInteraction } from "react-icons/ai";
 import { ImConnection } from "react-icons/im";
 import { CustomButton, Loading, TextInput, FacultiesSelector, SelectInput } from "../components";
 import { BgImage } from "../assets";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from "react-redux";
+import backgroundImage from '../assets/CTU.jpg';
 
 const Register = () => {
+  const { theme } = useSelector((state) => state.theme);
   const {
     register,
     handleSubmit,
     getValues,
+    trigger,
+    setError,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -23,19 +30,6 @@ const Register = () => {
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [availableMajors, setAvailableMajors] = useState([]);
   const [selectedMajor, setSelectedMajor] = useState("");
-
-  // const handleNextStep = async () => {
-  //   const isValid = await trigger(); // Kiểm tra validate tất cả các trường
-  
-  //   if (isValid) {
-  //     // Nếu tất cả các trường hợp lệ, chuyển sang bước tiếp theo
-  //     setCurrentStep((prevStep) => prevStep + 1);
-  //   } else {
-  //     // Nếu có trường không hợp lệ, hiển thị lỗi (đã được react-hook-form xử lý)
-  //   }
-  // };
-  
-
 
   useEffect(() => {
     const majors = FacultiesSelector.getMajorsByFacultyId(selectedFaculty);
@@ -56,7 +50,7 @@ const Register = () => {
             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
               <TextInput
                 name='firstName'
-                label='Tên'
+                label={<span className="font-bold">Tên</span>}
                 placeholder='Tên'
                 type='text'
                 styles='w-full'
@@ -67,7 +61,7 @@ const Register = () => {
               />
 
               <TextInput
-                label='Họ'
+                label={<span className="font-bold">Họ</span>}
                 placeholder='Họ'
                 type='lastName'
                 styles='w-full'
@@ -81,7 +75,7 @@ const Register = () => {
             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
               <TextInput
                   name='mssv'
-                  label='Mã số sinh viên'
+                  label={<span className="font-bold">Mã số sinh viên</span>}
                   placeholder='B1234567'
                   type='text'
                   styles='w-full'
@@ -95,7 +89,7 @@ const Register = () => {
             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
               <TextInput 
                 name='birthdate'
-                label='Ngày sinh'
+                label={<span className="font-bold">Ngày sinh</span>}
                 type='date' 
                 styles='w-full'
                 register={register("birthdate", {
@@ -115,7 +109,7 @@ const Register = () => {
         <div className='w-full flex-content flex-col lg:flex-row gap-1 md:gap-2'> 
             
             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
-            <SelectInput
+              <SelectInput
                 label='Khoa'
                 value={selectedFaculty}
                 onChange={(e) => setSelectedFaculty(parseInt(e.target.value, 10))}
@@ -130,25 +124,25 @@ const Register = () => {
               />
 
               <SelectInput
-                  label='Ngành'
-                  value={selectedMajor} // Thêm state selectedMajor
-                  onChange={(e) => setSelectedMajor(parseInt(e.target.value, 10))} // Thêm state selectedMajor
-                  options={[
-                    { value: "", label: "Chọn ngành" },
-                    ...availableMajors.map((major) => ({
-                      value: major.id,
-                      label: major.name,
-                    })),
-                  ]}
-                  styles='w-full'
-                />
+                label='Ngành'
+                value={selectedMajor}
+                onChange={(e) => setSelectedMajor(parseInt(e.target.value, 10))}
+                options={[
+                  { value: "", label: "Chọn ngành" },
+                  ...availableMajors.map((major) => ({
+                    value: major.id,
+                    label: major.name,
+                  })),
+                ]}
+                styles='w-full'
+              />
             </div>
 
             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
               <TextInput
                 name='email'
                 placeholder='B1234567@ctu.edu.vn'
-                label='Địa chỉ Email'
+                label={<span className="font-bold">Địa chỉ email</span>}
                 type='email'
                 register={register("email", {
                   required: "Địa chỉ Email là bắt buộc!",
@@ -165,7 +159,7 @@ const Register = () => {
             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
               <TextInput
                 name='password'
-                label='Mật khẩu'
+                label={<span className="font-bold">Mật khẩu</span>}
                 placeholder='Mật khẩu'
                 type='password'
                 styles='w-full'
@@ -176,7 +170,7 @@ const Register = () => {
               />
 
               <TextInput
-                label='Xác nhận mật khẩu'
+                label={<span className="font-bold">Xác nhận mật khẩu</span>}
                 placeholder='Mật khẩu'
                 type='password'
                 styles='w-full'
@@ -202,8 +196,24 @@ const Register = () => {
     },
   ];
 
-  const handleNextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
+  const handleNextStep = async () => {
+    const fieldsToValidate = currentStep === 1
+      ? ["firstName", "lastName", "mssv", "birthdate"]
+      : ["faculty", "major", "email", "password", "cPassword"];
+
+    const isValid = await trigger(fieldsToValidate);
+
+    if (isValid) {
+      setCurrentStep((prevStep) => prevStep + 1);
+
+      if (currentStep === 1) {
+        setError("faculty", { type: 'manual', message: '' });
+        setError("major", { type: 'manual', message: '' });
+        setError("email", { type: 'manual', message: '' });
+        setError("password", { type: 'manual', message: '' });
+        setError("cPassword", { type: 'manual', message: '' });
+      }
+    }
   };
 
   const handlePreviousStep = () => {
@@ -211,245 +221,81 @@ const Register = () => {
   };
 
   return (
-    <div className='bg-bgColor w-full h-[100vh] flex items-center justify-center p-6'>
-      <div className='w-full md:w-1/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex flex-row-reverse bg-primary rounded-xl overflow-hidden shadow-xl'>
-        <div className='w-full h-full p-10 2xl:px-20 flex flex-col justify-center '>
-          <div className='w-full flex gap-2 items-center mb-6 justify-center'>
-            <img src= {BgImage} className='w-14 h-14' />
-            <span className='text-2xl text-[#065ad8] ' font-semibold>
-              CTU Social
-            </span>
-          </div>
-
-          <p className='text-ascent-1 text-base font-semibold mx-auto'>
-            Tạo tài khoản của bạn
-          </p>
-
-          <form
-            className='py-8 flex flex-col gap-5'
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div>
-              {steps[currentStep - 1].content}
+    <div style={{ 
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat'
+    }}>
+      <div className='w-full h-[100vh] flex items-center justify-center p-6'>
+        <div className='w-full md:w-1/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex flex-row-reverse bg-primary rounded-xl overflow-hidden shadow-xl'>
+          <div className='w-full h-full p-10 2xl:px-20 flex flex-col justify-center '>
+            <div className='w-full flex gap-2 items-center mb-6 justify-center'>
+              <img src= {BgImage} className='w-14 h-14' />
+              <span className='text-2xl text-[#065ad8] font-semibold' >
+                CTU Social
+              </span>
             </div>
 
-            {/* Nút điều hướng */}
-            <div className="flex justify-between items-center">
-              {currentStep > 1 && (
-                <button onClick={handlePreviousStep}>Quay lại</button>
-              )}
-              {currentStep < steps.length ? (
-                <button onClick={handleNextStep}>Tiếp tục</button>
-              ) : (
-                <div>
-                <CustomButton
-                  type='submit'
-                  containerStyles={`inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none`}
-                  title='Tạo Tài Khoản'
-                />
+            <p className='text-ascent-1 text-base font-semibold mx-auto'>
+              Tạo tài khoản của bạn
+            </p>
+
+            <form
+              className='py-8 flex flex-col gap-5'
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className={`${currentStep === 1 ? '' : 'hidden'}`}>
+                {steps[0].content}
+              </div>
+              <div className={`${currentStep === 2 ? '' : 'hidden'}`}>
+                {steps[1].content}
+              </div>
+
+              {/* Nút điều hướng */}
+              <div className="flex justify-between items-center">
+                {currentStep >= steps.length ? (
+                  <button onClick={handlePreviousStep} disabled={currentStep === 1} className={`${theme === 'dark' ? 'text-white' : ''} `}>
+                    <FontAwesomeIcon icon={faChevronLeft} className={`${theme === 'dark' ? 'text-white' : ''}`} /> Quay lại
+                  </button>
+                ) : null}
+
+                {currentStep < steps.length ? (
+                  <button className="bg-transparent">
+                  </button>
+                ) : null}
+
+                {currentStep < steps.length ? (
+                  <button className={`${theme === 'dark' ? 'text-white' : ''} `} onClick={handleNextStep}>
+                    Tiếp tục <FontAwesomeIcon icon={faChevronRight} className={`${theme === 'dark' ? 'text-white' : ''}`} />
+                  </button>
+                ) : null}
+              </div>
+
+              {currentStep === steps.length && (
+                <div className="text-center mt-5">
+                  <CustomButton
+                    type='submit'
+                    containerStyles={`inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none`}
+                    title='Tạo Tài Khoản'
+                  />
                 </div>
               )}
-            </div>
-          </form>
-          <p className='text-ascent-2 text-sm text-center'>
-            Đã có tài khoản?{" "}
-            <Link
-              to='/login'
-              className='text-[#065ad8] font-semibold ml-2 cursor-pointer'
-            >
-              Đăng nhập
-            </Link>
-          </p>
+            </form>
+            <p className='text-ascent-2 text-sm text-center'>
+              Đã có tài khoản?{" "}
+              <Link
+                to='/login'
+                className='text-[#065ad8] font-semibold ml-2 cursor-pointer'
+              >
+                Đăng nhập
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
-//   return (
-//     <div className='bg-bgColor w-full h-[100vh] flex items-center justify-center p-6'>
-//       <div className='w-full md:w-2/4 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex flex-row-reverse bg-primary rounded-xl overflow-hidden shadow-xl'>
-//         <div className='w-full h-full p-10 2xl:px-20 flex flex-col justify-center '>
-//           <div className='w-full flex gap-2 items-center mb-6 justify-center'>
-//             <img src= {BgImage} className='w-14 h-14' />
-//             <span className='text-2xl text-[#065ad8] ' font-semibold>
-//               CTU Social
-//             </span>
-//           </div>
-
-//           <p className='text-ascent-1 text-base font-semibold mx-auto'>
-//             Tạo tài khoản của bạn
-//           </p>
-
-//           <form
-//             className='py-8 flex flex-col gap-5'
-//             onSubmit={handleSubmit(onSubmit)}
-//           >
-//             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
-//               <TextInput
-//                 name='firstName'
-//                 label='Tên'
-//                 placeholder='Tên'
-//                 type='text'
-//                 styles='w-full'
-//                 register={register("firstName", {
-//                   required: "Tên không được để trống!",
-//                 })}
-//                 error={errors.firstName ? errors.firstName?.message : ""}
-//               />
-
-//               <TextInput
-//                 label='Họ'
-//                 placeholder='Họ'
-//                 type='lastName'
-//                 styles='w-full'
-//                 register={register("lastName", {
-//                   required: "Họ không được để trống!",
-//                 })}
-//                 error={errors.lastName ? errors.lastName?.message : ""}
-//               />
-
-//               <TextInput 
-//                 name='birthdate'
-//                 label='Ngày sinh'
-//                 type='date' 
-//                 styles='w-full'
-//                 register={register("birthdate", {
-//                   required: "Ngày sinh không được để trống!"
-//                 })}
-//                 error={errors.birthdate ? errors.birthdate.message : ""}
-//               />
-//             </div>
-
-//             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
-//               <TextInput
-//                 name='email'
-//                 placeholder='B1234567@ctu.edu.vn'
-//                 label='Địa chỉ Email'
-//                 type='email'
-//                 register={register("email", {
-//                   required: "Địa chỉ Email là bắt buộc!",
-//                   pattern: {
-//                     value: /^[A-Za-z0-9]+@ctu\.edu\.vn$/,
-//                     message: "Email phải là mail của Đại Học Cần Thơ!"
-//                   }
-//                 })}
-//                 styles='w-full'
-//                 error={errors.email ? errors.email.message : ""}
-//               />
-
-//               <TextInput
-//                   name='mssv'
-//                   label='Mã số sinh viên'
-//                   placeholder='B1234567'
-//                   type='text'
-//                   styles='w-full'
-//                   register={register("mssv", {
-//                     required: "Mã số sinh viên không được để trống!",
-//                   })}
-//                   error={errors.mssv ? errors.mssv?.message : ""}
-//                 />
-//             </div>
-
-//             <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
-//               <TextInput
-//                 name='password'
-//                 label='Mật khẩu'
-//                 placeholder='Mật khẩu'
-//                 type='password'
-//                 styles='w-full'
-//                 register={register("password", {
-//                   required: "Mật khẩu là bắt buộc!",
-//                 })}
-//                 error={errors.password ? errors.password?.message : ""}
-//               />
-
-//               <TextInput
-//                 label='Xác nhận'
-//                 placeholder='Mật khẩu'
-//                 type='password'
-//                 styles='w-full'
-//                 register={register("cPassword", {
-//                   validate: (value) => {
-//                     const { password } = getValues();
-
-//                     if (password != value) {
-//                       return "Mật khẩu không khớp!";
-//                     }
-//                   },
-//                 })}
-//                 error={
-//                   errors.cPassword && errors.cPassword.type === "validate"
-//                     ? errors.cPassword?.message
-//                     : ""
-//                 }
-//               />
-
-//             <SelectInput
-//                 label='Khoa'
-//                 value={selectedFaculty}
-//                 onChange={(e) => setSelectedFaculty(parseInt(e.target.value, 10))}
-//                 options={[
-//                   { value: "", label: "Chọn khoa" },
-//                   ...FacultiesSelector.getFaculties().map((faculty) => ({
-//                     value: faculty.id,
-//                     label: faculty.name,
-//                   })),
-//                 ]}
-//                 styles='w-full'
-//               />
-
-//               <SelectInput
-//                   label='Ngành'
-//                   value={selectedMajor} // Thêm state selectedMajor
-//                   onChange={(e) => setSelectedMajor(parseInt(e.target.value, 10))} // Thêm state selectedMajor
-//                   options={[
-//                     { value: "", label: "Chọn ngành" },
-//                     ...availableMajors.map((major) => ({
-//                       value: major.id,
-//                       label: major.name,
-//                     })),
-//                   ]}
-//                   styles='w-full'
-//                 />
-//             </div>
-
-//             {errMsg?.message && (
-//               <span
-//                 className={`text-sm ${
-//                   errMsg?.status == "failed"
-//                     ? "text-[#f64949fe]"
-//                     : "text-[#2ba150fe]"
-//                 } mt-0.5`}
-//               >
-//                 {errMsg?.message}
-//               </span>
-//             )}
-
-//             {isSubmitting ? (
-//               <Loading />
-//             ) : (
-//               <CustomButton
-//                 type='submit'
-//                 containerStyles={`inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none`}
-//                 title='Tạo Tài Khoản'
-//               />
-//             )}
-//           </form>
-
-//           <p className='text-ascent-2 text-sm text-center'>
-//             Đã có tài khoản?{" "}
-//             <Link
-//               to='/login'
-//               className='text-[#065ad8] font-semibold ml-2 cursor-pointer'
-//             >
-//               Đăng nhập
-//             </Link>
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 export default Register;

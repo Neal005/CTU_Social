@@ -8,7 +8,7 @@ import {
   BsInstagram,
   BsPersonFillAdd,
 } from "react-icons/bs";
-import { FaTwitterSquare } from "react-icons/fa";
+import { FaRegBuilding, FaLinkedin, FaGithub } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import moment from "moment";
 
@@ -32,11 +32,8 @@ const ProfileCard = ({ user }) => {
 
             <div className='flex flex-col justify-center'>
               <p className='text-lg font-medium text-ascent-1'>
-                {user?.firstName} {user?.lastName}
+                {user?.lastName} {user?.firstName}
               </p>
-              <span className='text-ascent-2'>
-                {user?.profession ?? "No Profession"}
-              </span>
             </div>
           </Link>
 
@@ -60,13 +57,13 @@ const ProfileCard = ({ user }) => {
 
         <div className='w-full flex flex-col gap-2 py-4 border-b border-[#66666645]'>
           <div className='flex gap-2 items-center text-ascent-2'>
-            <CiLocationOn className='text-xl text-ascent-1' />
-            <span>{user?.location ?? "Add Location"}</span>
+            <FaRegBuilding className='text-xl text-ascent-1' />
+            <span>{user?.faculty ?? ""}</span>
           </div>
 
           <div className='flex gap-2 items-center text-ascent-2'>
             <BsBriefcase className=' text-lg text-ascent-1' />
-            <span>{user?.profession ?? "Add Profession"}</span>
+            <span>{user?.major ?? ""}</span>
           </div>
         </div>
 
@@ -96,17 +93,26 @@ const ProfileCard = ({ user }) => {
           <p className='text-ascent-1 text-lg font-semibold'>Social Profile</p>
 
           <div className='flex gap-2 items-center text-ascent-2'>
-            <BsInstagram className=' text-xl text-ascent-1' />
-            <span>Instagram</span>
-          </div>
-          <div className='flex gap-2 items-center text-ascent-2'>
-            <FaTwitterSquare className=' text-xl text-ascent-1' />
-            <span>Twitter</span>
-          </div>
-          <div className='flex gap-2 items-center text-ascent-2'>
             <BsFacebook className=' text-xl text-ascent-1' />
-            <span>Facebook</span>
+            <a href={`${user?.facebook}`} target="_blank" rel="noopener noreferrer">
+              Facebook
+            </a>
           </div>
+
+          <div className='flex gap-2 items-center text-ascent-2'>
+            <FaLinkedin className=' text-xl text-ascent-1' />
+            <a href={`${user?.linkedin}`} target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+          </div>
+
+          <div className='flex gap-2 items-center text-ascent-2'>
+            <FaGithub className=' text-xl text-ascent-1' />
+            <a href={`${user?.github}`} target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </div>
+
         </div>
       </div>
     </div>
