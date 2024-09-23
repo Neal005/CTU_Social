@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/CTU_Social_client/static/css/main.09e118ad.css",
-    "main.js": "/CTU_Social_client/static/js/main.6362a581.js",
+    "main.css": "/CTU_Social_client/static/css/main.b0cc7994.css",
+    "main.js": "/CTU_Social_client/static/js/main.9cb3c8cd.js",
     "static/media/CTU-Logo.png": "/CTU_Social_client/static/media/CTU-Logo.e08c2c37369fe893b935.png",
+    "static/media/CTU.jpg": "/CTU_Social_client/static/media/CTU.57f9a3c5f6ead949ef68.jpg",
     "static/media/userprofile.png": "/CTU_Social_client/static/media/userprofile.0d14c6999b4a5c8e86a7.png",
     "index.html": "/CTU_Social_client/index.html",
-    "main.09e118ad.css.map": "/CTU_Social_client/static/css/main.09e118ad.css.map",
-    "main.6362a581.js.map": "/CTU_Social_client/static/js/main.6362a581.js.map"
+    "main.b0cc7994.css.map": "/CTU_Social_client/static/css/main.b0cc7994.css.map",
+    "main.9cb3c8cd.js.map": "/CTU_Social_client/static/js/main.9cb3c8cd.js.map"
   },
   "entrypoints": [
-    "static/css/main.09e118ad.css",
-    "static/js/main.6362a581.js"
+    "static/css/main.b0cc7994.css",
+    "static/js/main.9cb3c8cd.js"
   ]
 }
