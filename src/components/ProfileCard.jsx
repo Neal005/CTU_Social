@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { LiaEditSolid } from "react-icons/lia";
 import {
   BsBriefcase,
@@ -18,6 +18,8 @@ import { UpdateProfile } from "../redux/userSlice";
 const ProfileCard = ({ user }) => {
   const { user: data, edit } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const location = useLocation();
+
 
   return (
     <div>
@@ -38,13 +40,17 @@ const ProfileCard = ({ user }) => {
           </Link>
 
           <div className=''>
-            {user?._id === data?._id ? (
-              <LiaEditSolid
-                size={22}
-                className='text-blue cursor-pointer'
-                onClick={() => dispatch(UpdateProfile(true))}
-              />
-            ) : (
+            {user?._id === data?._id && (
+              location.pathname === "/" && (
+                <LiaEditSolid
+                  size={22}
+                  className='text-blue cursor-pointer'
+                  onClick={() => dispatch(UpdateProfile(true))}
+                />
+              )
+            )}
+            
+            {user?._id !== data?._id && (
               <button
                 className='bg-[#0444a430] text-sm text-white p-1 rounded'
                 onClick={() => {}}

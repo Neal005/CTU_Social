@@ -79,7 +79,8 @@ z-index: 49;
     --color-ascent2: 89 91 100;
     --color-blue: 6 90 216;
     --color-white: 255 255 255;
-
+    --color-red: 239 68 68;
+    --color-sky: 59 130 246;
   }
   /* //15 23 42  21 30 49*/
   [data-theme="dark"] {
@@ -89,6 +90,8 @@ z-index: 49;
     --color-ascent1: 255 255 255;
     --color-ascent2: 164 161 162;
     --color-blue: 6 90 216;
+    --color-red: 239 68 68;
+    --color-sky: 59 130 246;
     /* //16 176 255; */
     --color-white: 255 255 255;
   }

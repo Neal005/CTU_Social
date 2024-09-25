@@ -10,16 +10,16 @@ import {
   TextInput,
   TopBar,
 } from "../components";
-import { suggest, requests, posts, faculties } from "../assets/data";
+import { suggest, requests } from "../assets/data";
+import { posts, faculties } from "../assets/home";
 import { Link, useLocation, ScrollRestoration } from "react-router-dom";
 import { NoProfile } from "../assets";
-import { BsFiletypeGif, BsPersonFillAdd } from "react-icons/bs";
-import { BiImages, BiSolidVideo } from "react-icons/bi";
+import { BsPersonFillAdd } from "react-icons/bs";
+import { BiImages } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { CiFileOn } from "react-icons/ci";
 
 const Home = () => {
-  const { theme } = useSelector((state) => state.theme);
   const { user, edit } = useSelector((state) => state.user);
   const [friendRequest, setFriendRequest] = useState(requests);
   const [suggestedFriends, setSuggestedFriends] = useState(suggest);
@@ -41,13 +41,16 @@ const Home = () => {
     setSelectedScope(event.target.value);
   };
 
-  const [selectedFaculty, setSelectedFaculty] = useState(null)
+  const [selectedFaculty, setSelectedFaculty] = useState('')
 
   useEffect(() => {
     if (user && user.facultyId) {
       setSelectedFaculty(user.facultyId);
+    } else {
+      setSelectedFaculty('');
     }
   }, [user]);
+  
 
   return (
     <>
@@ -136,9 +139,9 @@ const Home = () => {
                     onChange={handleScopeChange}
                     className={`bg-secondary border-[#66666690] mb-2 outline-none text-sm text-ascent-2 placeholder:text-[#666] w-full border rounded-md py-2 px-3 mt-1`}
                   >
-                    <option value="Nam">Private</option>
-                    <option value="Nữ">Public</option>
-                    <option value="Khác">Groups</option>
+                    <option value="Private">Private</option>
+                    <option value="Public">Public</option>
+                    <option value="Groups">Groups</option>
                   </select>
                 </label>
 
@@ -149,7 +152,7 @@ const Home = () => {
                     <CustomButton
                       type='submit'
                       title='Post'
-                      containerStyles='bg-[#0444a4] text-white py-1 px-6 rounded-full font-semibold text-sm'
+                      containerStyles='bg-blue hover:bg-sky text-white py-1 px-6 rounded-full font-semibold text-sm'
                     />
                   )}
                 </div>

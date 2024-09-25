@@ -19,6 +19,7 @@ const SelectInput = React.forwardRef(
             onChange={onChange}
             className={`bg-secondary rounded border border-[#66666690] mb-2 outline-none text-sm text-ascent-2 px-4 py-3 placeholder:text-[#666] ${styles}`}
             aria-invalid={error ? "true" : "false"}
+            required
           >
             {options.map((option) => (
               <option key={option.value} value={option.value}>

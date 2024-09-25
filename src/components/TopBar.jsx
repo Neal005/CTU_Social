@@ -11,7 +11,7 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { SetTheme } from "../redux/theme";
 import { Logout } from "../redux/userSlice";
 import { BgImage } from "../assets";
-import { FaRegMessage } from "react-icons/fa6";
+import { FaRegMessage, FaMessage } from "react-icons/fa6";
 import { IoIosMenu } from "react-icons/io";
 
 const TopBar = () => {
@@ -35,22 +35,25 @@ const TopBar = () => {
 
   return (
     <div className='topbar w-full flex items-center justify-between py-3 md:py-6 px-4 bg-primary'>
-
-      <Link to='/' className='flex gap-2 items-center'>
-        <img src= {BgImage} className='hidden lg:flex w-14 h-14' />
-        <span className='hidden lg:flex text-xl md:text-2xl text-[#065ad8] font-semibold'>
-          CTU Social
-        </span>
-      </Link>
+      <div>
+        <Link to='/' className='flex gap-2 items-center'>
+          <img src= {BgImage} className='hidden lg:flex w-14 h-14' />
+          <span className='hidden lg:flex text-xl md:text-2xl text-[#065ad8] font-semibold'>
+            CTU Social
+          </span>
+        </Link>
+      </div>
       {/* Mobile Menu Icon */}
       <div className='lg:hidden text-2xl absolute left-4 flex items-center'>
         <Link to='/' className='flex gap-2 items-center'>
             <img src={BgImage} className='lg:hidden w-9 h-9' />
         </Link>
-        <IoIosMenu 
-          className={`lg:hidden text-2xl ml-2 ${theme === 'dark' ? 'text-white' : ''}`} 
-          onClick={() => setShowMenu(!showMenu)}
-        />
+        <div className='relative'>
+          <IoIosMenu 
+            className={`lg:hidden text-2xl ml-2 ${theme === 'dark' ? 'text-white' : ''}`} 
+            onClick={() => setShowMenu(!showMenu)}
+          />
+        </div>
       </div>
 
       {/* Mobile Menu Dropdown */}
@@ -64,13 +67,13 @@ const TopBar = () => {
       >
         <TextInput
           placeholder='Tìm kiếm...'
-          styles='w-[18rem] lg:w-[38rem]  rounded-l-full py-3 '
+          styles='w-[10rem] lg:w-[30rem]  rounded-l-full py-3 '
           register={register("search")}
         />
         <CustomButton
           title='Search'
           type='submit'
-          containerStyles='bg-[#0444a4] text-white px-6 py-2.5 mt-2 rounded-r-full'
+          containerStyles='bg-blue hover:bg-sky text-white px-3 py-2.5 mt-2 rounded-r-full'
         />
       </form>
 
@@ -79,12 +82,25 @@ const TopBar = () => {
         <button onClick={() => handleTheme()}>
           {theme ? <BsMoon /> : <BsSunFill />}
         </button>
-        <div className='hidden lg:flex'>
+
+        <div className='flex relative'>
           <Link to={`/messages/${user._id}`}>
+            {user?.messages?.length > 0 && (
+              <div className='absolute inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red border-3 border-white rounded-full -top-2 -end-2'>
+                <span className='text-sm text-white'>{user?.messages?.length}</span>
+              </div>
+            )}
+            {user?.messages?.length > 0 ? (
+              <FaMessage color='#065ad8'/>
+            ) : (
               <FaRegMessage />
+            )}
           </Link>
+
+          
         </div>
-        <div className='hidden lg:flex items-center'>
+
+        <div className='flex items-center'>
           <IoNotificationsOutline size={24} />
         </div>
 

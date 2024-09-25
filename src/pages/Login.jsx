@@ -30,7 +30,7 @@ const Login = () => {
       backgroundImage: `url(${backgroundImage})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
+      backgroundRepeat: 'repeat'
     }}>
       <div className='w-full h-[100vh] flex items-center justify-center p-6'>
         <div className='w-full md:w-2/6 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex bg-primary rounded-xl overflow-hidden shadow-xl'>
@@ -47,7 +47,7 @@ const Login = () => {
             </p>
 
             <form
-              className='py-8 flex flex-col gap-5='
+              className='py-8 flex flex-col gap-5 overflow-y-auto'
               onSubmit={handleSubmit(onSubmit)}
             >
               <TextInput
@@ -104,7 +104,7 @@ const Login = () => {
               ) : (
                 <CustomButton
                   type='submit'
-                  containerStyles={`inline-flex justify-center rounded-md bg-blue hover:bg-red px-8 py-3 text-sm font-medium text-white outline-none`}
+                  containerStyles={`inline-flex justify-center rounded-md bg-blue hover:bg-sky px-8 py-3 text-sm font-medium text-white outline-none`}
                   title='Đăng nhập'
                 />
               )}

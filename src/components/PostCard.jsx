@@ -3,12 +3,13 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import { NoProfile } from "../assets";
 import { BiComment, BiLike, BiSolidLike } from "react-icons/bi";
-import { MdOutlineDeleteOutline } from "react-icons/md";
+import { CiShare2, CiMenuKebab } from "react-icons/ci";
+import { MdOutlineReportProblem } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import TextInput from "./TextInput";
 import Loading from "./Loading";
 import CustomButton from "./CustomButton";
-import { postComments } from "../assets/data";
+import { postComments } from "../assets/home";
 import { useSelector } from "react-redux";
 import { ImageDetail } from "../components";
 
@@ -48,7 +49,7 @@ const ReplyCard = ({ reply, user, handleLike }) => {
             ) : (
               <BiLike size={20} />
             )}
-            {reply?.likes?.length} Likes
+            {reply?.likes?.length}
           </p>
         </div>
       </div>
@@ -85,9 +86,9 @@ const CommentForm = ({ user, id, replyAt, getComments }) => {
         <TextInput
           name='comment'
           styles='w-full rounded-full py-3'
-          placeholder={replyAt ? `Reply @${replyAt}` : "Comment this post"}
+          placeholder={replyAt ? `Reply @${replyAt}` : "Bình luận bài đăng"}
           register={register("comment", {
-            required: "Comment can not be empty",
+            required: "Bình luận không được để trống",
           })}
           error={errors.comment ? errors.comment.message : ""}
         />
@@ -110,9 +111,9 @@ const CommentForm = ({ user, id, replyAt, getComments }) => {
           <Loading />
         ) : (
           <CustomButton
-            title='Submit'
+            title='Bình luận'
             type='submit'
-            containerStyles='bg-[#0444a4] text-white py-1 px-3 rounded-full font-semibold text-sm'
+            containerStyles='bg-[#0444a4] text-white py-1 px-3 rounded-full font-semibold text-sm hover:bg-sky'
           />
         )}
       </div>
@@ -144,6 +145,7 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
     setShowImageModal(true);
   };
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div className='mb-2 bg-primary p-4 rounded-xl'>
@@ -158,7 +160,7 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
           <img
             src={post?.userId?.profileUrl ?? NoProfile}
             alt={post?.userId?.firstName}
-            className='w-14 h-14 object-cover rounded-full'
+            className='w-16 h-13 object-cover rounded-full'
           />
         </Link>
 
@@ -178,8 +180,22 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
       </span>
           </div>
 
-          <span className='text-ascent-2'>
+          <span className='flex item-centers gap-4 text-ascent-2'>
             {moment(post?.createdAt ?? "2023-05-25").fromNow()}
+            <div className='relative'>
+              <CiMenuKebab className='text-ascent-1 h-full text-lg' onClick={() => setShowMenu(!showMenu)} />
+              {showMenu && (
+                <div className="absolute top-0 end-5 bg-primary border border-gray-300 rounded-md z-50">
+                  <ul className="py-1 text-ascent-1 itemscenters px-2">
+                    <li className='py-1'>Lưu</li>
+                    <li className='py-1'><span>Chia&nbsp;sẻ</span></li>
+                    {user?._id === post?.userId?._id && (
+                      <li className='py-1' onClick={() => deletePost(post._id)}>Xóa</li>
+                    )}
+                  </ul>
+                </div>
+              )}
+            </div>
           </span>
         </div>
       </div>
@@ -258,12 +274,13 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
       >
         <p className='flex gap-2 items-center text-base cursor-pointer'>
           {post?.likes?.includes(user?._id) ? (
-            <BiSolidLike size={20} color='blue' />
+            <BiSolidLike size={20} color='#065ad8' />
           ) : (
             <BiLike size={20} />
           )}
-          {post?.likes?.length} Likes
+          {post?.likes?.length}
         </p>
+
 
         <p
           className='flex gap-2 items-center text-base cursor-pointer'
@@ -273,10 +290,24 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
           }}
         >
           <BiComment size={20} />
-          {post?.comments?.length} Comments
+          {post?.comments?.length}
         </p>
 
-        {user?._id === post?.userId?._id && (
+        {/* <p className='flex gap-2 items-center text-base cursor-pointer'>
+          <CiShare2 size={20} />
+          {post?.share?.length}
+        </p> */}
+        
+        <p className='flex gap-2 items-center text-base cursor-pointer'>
+          {post?.report?.length > 0 ? (
+            <MdOutlineReportProblem size={20} color='red' />
+          ) : (
+            <MdOutlineReportProblem size={20} />
+          )}
+          {post?.report?.length}
+        </p>
+
+        {/* {user?._id === post?.userId?._id && (
           <div
             className='flex gap-1 items-center text-base text-ascent-1 cursor-pointer'
             onClick={() => deletePost(post?._id)}
@@ -284,7 +315,7 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
             <MdOutlineDeleteOutline size={20} />
             <span>Delete</span>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* COMMENTS */}
@@ -331,13 +362,13 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
                       ) : (
                         <BiLike size={20} />
                       )}
-                      {comment?.likes?.length} Likes
+                      {comment?.likes?.length}
                     </p>
                     <span
                       className='text-blue cursor-pointer'
                       onClick={() => setReplyComments(comment?._id)}
                     >
-                      Reply
+                      Phản hồi
                     </span>
                   </div>
 
@@ -365,7 +396,7 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
                         )
                       }
                     >
-                      Show Replies ({comment?.replies?.length})
+                      Hiện thêm ({comment?.replies?.length})
                     </p>
                   )}
 

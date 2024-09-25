@@ -2,10 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { TbSocial } from "react-icons/tb";
-import { BsShare } from "react-icons/bs";
-import { AiOutlineInteraction } from "react-icons/ai";
-import { ImConnection } from "react-icons/im";
 import { CustomButton, Loading, TextInput, FacultiesSelector, SelectInput } from "../components";
 import { BgImage } from "../assets";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,6 +25,7 @@ const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [availableMajors, setAvailableMajors] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState([]);
   const [selectedMajor, setSelectedMajor] = useState("");
 
   useEffect(() => {
@@ -108,7 +105,7 @@ const Register = () => {
       content: (
         <div className='w-full flex-content flex-col lg:flex-row gap-1 md:gap-2'> 
             
-            <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
+            <div className='w-full my-1 lg:flex-row gap-1 md:gap-2'>
               <SelectInput
                 label='Khoa'
                 value={selectedFaculty}
@@ -123,22 +120,38 @@ const Register = () => {
                 styles='w-full'
               />
 
-              <SelectInput
-                label='Ngành'
-                value={selectedMajor}
-                onChange={(e) => setSelectedMajor(parseInt(e.target.value, 10))}
-                options={[
-                  { value: "", label: "Chọn ngành" },
-                  ...availableMajors.map((major) => ({
-                    value: major.id,
-                    label: major.name,
-                  })),
-                ]}
-                styles='w-full'
-              />
+              <div className="w-full flex gap-1">
+                <SelectInput
+                  label='Ngành'
+                  value={selectedMajor}
+                  onChange={(e) => setSelectedMajor(parseInt(e.target.value, 10))}
+                  options={[
+                    { value: "", label: "Chọn ngành" },
+                    ...availableMajors.map((major) => ({
+                      value: major.id,
+                      label: major.name,
+                    })),
+                  ]}
+                  styles='w-full'
+                />
+
+                <SelectInput
+                  label='Khóa'
+                  value={selectedCourse}
+                  onChange={(e) => setSelectedCourse(parseInt(e.target.value, 10))}
+                  options={[
+                    { value: "", label: "Chọn khóa" },
+                    ...(selectedMajor && availableMajors.find(major => major.id === selectedMajor)?.courses || []).map((course) => ({
+                      value: course.id,
+                      label: course.name,
+                    })),
+                  ]}
+                  styles='w-full'
+                />
+              </div>
             </div>
 
-            <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
+            <div className='w-full my-1 flex flex-col lg:flex-row gap-1 md:gap-2'>
               <TextInput
                 name='email'
                 placeholder='B1234567@ctu.edu.vn'
@@ -156,7 +169,7 @@ const Register = () => {
               />
             </div>
 
-            <div className='w-full flex flex-col lg:flex-row gap-1 md:gap-2'>
+            <div className='w-full my-1 flex flex-col lg:flex-row gap-1 md:gap-2'>
               <TextInput
                 name='password'
                 label={<span className="font-bold">Mật khẩu</span>}
@@ -199,7 +212,7 @@ const Register = () => {
   const handleNextStep = async () => {
     const fieldsToValidate = currentStep === 1
       ? ["firstName", "lastName", "mssv", "birthdate"]
-      : ["faculty", "major", "email", "password", "cPassword"];
+      : ["faculty", "major", "course", "email", "password", "cPassword"];
 
     const isValid = await trigger(fieldsToValidate);
 
@@ -209,6 +222,7 @@ const Register = () => {
       if (currentStep === 1) {
         setError("faculty", { type: 'manual', message: '' });
         setError("major", { type: 'manual', message: '' });
+        setError("course", { type: 'manual', message: '' });
         setError("email", { type: 'manual', message: '' });
         setError("password", { type: 'manual', message: '' });
         setError("cPassword", { type: 'manual', message: '' });
@@ -228,7 +242,7 @@ const Register = () => {
       backgroundRepeat: 'no-repeat'
     }}>
       <div className='w-full h-[100vh] flex items-center justify-center p-6'>
-        <div className='w-full md:w-1/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex flex-row-reverse bg-primary rounded-xl overflow-hidden shadow-xl'>
+        <div className='w-full md:w-1/3 h-fit lg:h-full 2xl:h-5/7 py-8 lg:py-0 flex flex-row-reverse bg-primary rounded-xl overflow-hidden shadow-xl'>
           <div className='w-full h-full p-10 2xl:px-20 flex flex-col justify-center '>
             <div className='w-full flex gap-2 items-center mb-6 justify-center'>
               <img src= {BgImage} className='w-14 h-14' />
@@ -276,7 +290,7 @@ const Register = () => {
                 <div className="text-center mt-5">
                   <CustomButton
                     type='submit'
-                    containerStyles={`inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none`}
+                    containerStyles={`inline-flex justify-center rounded-md bg-blue hover:bg-sky px-8 py-3 text-sm font-medium text-white outline-none`}
                     title='Tạo Tài Khoản'
                   />
                 </div>
