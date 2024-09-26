@@ -246,17 +246,30 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
                   <img
                     src={img}
                     alt={`post image ${index}`}
-                    className='w-full mt-2 rounded-lg transition duration-300 ease-in-out hover:scale-110'
+                    className={`
+                      w-full mt-2 rounded-lg transition duration-300 ease-in-out hover:scale-110 
+                      ${post?.image.length > 4 && index > 2 ? 'hidden' : ''}
+                      `}
                     style={{ opacity: index === post?.image.slice(0, 4).length - 1 && post?.image.length > 4 ? '0.5' : '1' }}
                     onClick={handleImageClick}
                   />
 
                   {post?.image.length > 4 && index === post?.image.slice(0, 4).length - 1 && (
                     <div
-                      className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg transition duration-100 ease-in-out hover:scale-150'
+                      className='relative inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg transition duration-300 ease-in-out hover:scale-110'
                       onClick={() => handleImageClick(post.image)}
                     >
-                      <span className={`font-bold text-lg ${theme === 'dark' ? 'text-white' : ''}`}>+{post?.image.length - 4}</span>
+                      <img
+                        src={img}
+                        alt={`post image ${index}`}
+                        className='w-full mt-2 opacity-50 rounded-lg transition duration-300 ease-in-out hover:scale-110'
+                      />
+                      <span 
+                      className={`
+                          font-bold text-lg absolute inset-0 flex items-center justify-center ${theme === 'dark' ? 'text-white' : ''}
+                        `}>
+                        +{post?.image.length - 4}
+                      </span>
                     </div>
                   )}
                 </div>

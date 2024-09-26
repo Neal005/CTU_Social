@@ -13,7 +13,7 @@ export const posts = [
       image: [
           "/pictures/1 (1).jpg",
           "/pictures/1 (2).jpg",
-          "/pictures/1 (3).jpg",
+          "/pictures/Neal.jpg",
           "/pictures/1 (4).jpg",
           "/pictures/1 (5).jpg",
           "/pictures/1 (6).jpg",
