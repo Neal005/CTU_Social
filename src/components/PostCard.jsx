@@ -11,7 +11,7 @@ import Loading from "./Loading";
 import CustomButton from "./CustomButton";
 import { postComments } from "../assets/home";
 import { useSelector } from "react-redux";
-import { ImageDetail } from "../components";
+import { ImageDetail } from ".";
 
 const ReplyCard = ({ reply, user, handleLike }) => {
   return (

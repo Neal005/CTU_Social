@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./src/**/*.{html,js,jsx}"],
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     colors: {
       bgColor: "rgb(var(--color-bg) / <alpha-value>)",
@@ -8,6 +11,8 @@ module.exports = {
       secondary: "rgb(var(--color-secondary) / <alpha-value>)",
       blue: "rgb(var(--color-blue) / <alpha-value>)",
       white: "rgb(var(--color-white) / <alpha-value>)",
+      red: "rgb(var(--color-red) / <alpha-value>)",
+      sky: "rgb(var(--color-sky) / <alpha-value>)",
       ascent: {
         1: "rgb(var(--color-ascent1) / <alpha-value>)",
         2: "rgb(var(--color-ascent2) / <alpha-value>)",
@@ -27,4 +32,5 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-};
+}
+
