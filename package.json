@@ -1,5 +1,6 @@
 {
   "name": "client",
+  "homepage": "https://neal005.github.io/CTU_Social_client/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
