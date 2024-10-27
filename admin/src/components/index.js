@@ -13,7 +13,7 @@ import FacultiesSelector from './FacultiesSelector';
 import GroupRequests from './GroupRequests';
 import PostRequests from './PostRequests';
 import ActivitiesCard from './ActivitiesCard';
-
+import ActivityForm from './ActivityForm';
 
 export {
   Loading,
@@ -30,5 +30,6 @@ export {
   GroupRequests,
   FriendsCard,
   PostRequests,
-  ActivitiesCard
+  ActivitiesCard,
+  ActivityForm
 };
