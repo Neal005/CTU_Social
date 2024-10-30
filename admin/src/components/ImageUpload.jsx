@@ -1,10 +1,8 @@
 import { React, useState, useEffect } from 'react';
 
-const ImageUpload = ( image, setImages ) => {
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [imageUrl, setImageUrl] = useState(image);
-    console.log(imageUrl);
+const ImageUpload = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -16,8 +14,6 @@ const ImageUpload = ( image, setImages ) => {
       } else {
         setErrorMessage(null);
         setSelectedImage(file);
-        setImageUrl(null);
-        console.log(imageUrl);
       }
     }
   };
@@ -59,12 +55,7 @@ const ImageUpload = ( image, setImages ) => {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        <img
-            src={imageUrl}
-            alt="Uploaded"
-            className="h-[25%] w-full"
-            />
-        {selectedImage && imageUrl === null ? (
+        {selectedImage ? (
           <div className="relative">
             <img
             src={URL.createObjectURL(selectedImage)}

@@ -8,16 +8,12 @@ import {
 import { MdDelete, MdEdit } from "react-icons/md";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
-
 const ActivitiesCard = () => {
     const { user, edit } = useSelector((state) => state.user);
     const [selectedFaculty, setSelectedFaculty] = useState('');
     const [showSearch, setShowSearch] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const searchInputRef = useRef(null);
-    const [newFacultyTitle, setNewFacultyTitle] = useState('');
-    const [newFacultyUrl, setNewFacultyUrl] = useState('');
-    const [newFacultyImage, setNewFacultyImage] = useState(null);
     const [editingActivity, setEditingActivity] = useState(null);
     const [showAddActivity, setShowAddActivity] = useState(false);
     const [showEditActivity, setShowEditActivity] = useState(false);
@@ -26,15 +22,9 @@ const ActivitiesCard = () => {
         setShowAddActivity(true);
     };
 
-    const handleAddActivitySubmit = () => {
-        console.log("Thêm hoạt động mới:", newFacultyTitle, newFacultyUrl, newFacultyImage, " cho Khoa: ", selectedFaculty);
-        // Xử lý thêm hoạt động mới ở đây
-        // ...
-
-        // Sau khi thêm hoạt đông mới, reset các state và ẩn form
-        setNewFacultyTitle('');
-        setNewFacultyUrl('');
-        setNewFacultyImage(null);
+    const handleAddActivitySubmit = (newActivityData) => {
+        console.log("Thêm hoạt động mới:", newActivityData, " cho Khoa: ", selectedFaculty);
+        // Xử lý thêm hoạt động mới
     };
 
     useEffect(() => {
@@ -56,8 +46,8 @@ const ActivitiesCard = () => {
         // logic xóa hoạt động
     };
 
-    const handleUpdateActivity = () => {
-        console.log("Cập nhật hoạt động:", editingActivity);
+    const handleUpdateActivity = (newActivityData) => {
+        console.log("Cập nhật hoạt động", editingActivity.id ,"của khoa ", selectedFaculty,": ", newActivityData);
         // logic cập nhật hoạt động
     }
 
@@ -87,8 +77,8 @@ const ActivitiesCard = () => {
 
     return (
         <>
-            <div className='flex-1 bg-primary shadow-sm rounded-lg px-5 py-5 mb-1 overflow-y-auto h-[calc(100vh-8rem)]' >
-                <div className='flex items-center justify-between text-lg text-ascent-1 border-b border-[#66666645]'>
+            <div className='flex-1 shadow-sm rounded-lg py-5 mb-1 h-full overflow-y-auto' >
+                <div className='flex items-center justify-between h-[10%] text-lg text-ascent-1 border-b border-[#66666645]'>
                     <div>
                         <CustomButton
                             onClick={handleAddActivityClick}
@@ -98,7 +88,7 @@ const ActivitiesCard = () => {
 
                         {showAddActivity && (
                             <ActivityForm 
-                                onAddActivity={handleAddActivitySubmit} 
+                                submitActivity={handleAddActivitySubmit} 
                                 onClose={onClose} 
                                 formTitle="Thêm hoạt động" 
                                 submitTitle="Thêm" 
@@ -143,47 +133,51 @@ const ActivitiesCard = () => {
                     </div>
                 </div>
 
-                <div className='w-full flex flex-col gap-4 pt-4'>
+                <div className='w-full flex flex-col gap-4 pt-4 overflow-y-auto h-[90%]'>
                     {faculties
                         .find((faculty) => faculty.id === selectedFaculty)
                         ?.activities.filter((activity) => 
                             activity.title.toLowerCase().includes(searchTerm.toLowerCase())
                         )
                         .map((activity) => (
-                        <div key={activity.id} className='flex flex-col mb-4 gap-4 relative border-[#66666690] border-b pb-4 transform hover:-translate-y-3 transition-transform duration-300'>                         <a
-                                href={activity.link}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                className='text-3xl mb-2 font-medium text-ascent-1 hover:underline'
-                            >
-                                {activity.title}
-                            </a>
+                        <div key={activity.id} className='flex flex-col mb-4 gap-4 relative border-[#66666690] border-b pb-4 transform hover:-translate-y-3 transition-transform duration-300'>
+                             <div className="flex items-center justify-between">
+                                <a
+                                    href={activity.link}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='text-3xl mb-2 font-medium text-ascent-1 hover:underline'
+                                >
+                                    {activity.title}
+                                </a>
+
+                                <div>
+                                    <button 
+                                        onClick={() => handleEditActivity(activity)}
+                                        className="text-ascent-1 p-2 rounded-md mr-2"
+                                    >
+                                        <MdEdit className="h-7 w-7" />
+                                    </button>
+                                    <button 
+                                        onClick={() => handleDeleteActivity(activity.id)}
+                                        className="text-ascent-1 p-2 rounded-md"
+                                    >
+                                        <MdDelete className="h-7 w-7" />
+                                    </button>
+                                </div>
+                            </div>
                             <img
                                 src={activity.image}
                                 alt={activity.title}
-                                className='w-full h-full object-cover rounded-md'
+                                className='w-full h-full rounded-md'
                             />
-                            <div className="absolute top-0 right-0 flex items-center">
-                                <button 
-                                    onClick={() => handleEditActivity(activity)}
-                                    className="text-ascent-1 p-2 rounded-md mr-2"
-                                >
-                                    <MdEdit className="h-7 w-7" />
-                                </button>
-                                <button 
-                                    onClick={() => handleDeleteActivity(activity.id)}
-                                    className="text-ascent-1 p-2 rounded-md"
-                                >
-                                    <MdDelete className="h-7 w-7" />
-                                </button>
-                            </div>
                         </div>
                     ))}
                 </div>
             </div>
             {showEditActivity && (
                 <ActivityForm 
-                    onAddActivity={handleUpdateActivity} 
+                    submitActivity={handleUpdateActivity} 
                     onClose={onClose} 
                     formTitle="Chỉnh sửa hoạt động" 
                     submitTitle="Lưu"

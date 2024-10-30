@@ -1,26 +1,27 @@
 import { React, useState , useEffect } from 'react';
-import ImageUpload from './ImageUpload';
 
-const AddActivity = ({ onAddActivity, onClose, formTitle, submitTitle , initialValues }) => {
+const AddActivity = ({ submitActivity, onClose, formTitle, submitTitle , initialValues }) => {
     const [title, setTitle] = useState('');
     const [url, setUrl] = useState('');
-    const [image, setImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState(initialValues ? initialValues.image : '');
 
     useEffect(() => {
         if (initialValues) {
             setTitle(initialValues.title);
             setUrl(initialValues.link);
-            setImage(initialValues.image);
+            setImageUrl(initialValues.image);
         }
     }, [initialValues]);
 
-    const handleSubmit = () => {
-        onAddActivity({ title, url, image });
+    const handleImageUrlChange = (e) => {
+        setImageUrl(e.target.value);
+    };
 
-        // Reset state và đóng form
+    const handleSubmit = () => {
+        submitActivity({ title, url, imageUrl });
         setTitle('');
         setUrl('');
-        setImage(null);
+        setImageUrl(null);
         onClose();
     };
 
@@ -39,7 +40,7 @@ const AddActivity = ({ onAddActivity, onClose, formTitle, submitTitle , initialV
                 </div>
             </div>
 
-            <div className="mb-4 overflow-y-auto h-[calc(50vh-8rem)]">
+            <div className="mb-4 overflow-y-auto h-[calc(70vh-8rem)]">
                 <label htmlFor="title" className="block text-gray-700 font-bold mb-2">Tiêu đề:</label>
                 <input
                     type="text"
@@ -56,10 +57,22 @@ const AddActivity = ({ onAddActivity, onClose, formTitle, submitTitle , initialV
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                     />
-                <label className="block text-gray-700 font-bold mb-2 mt-4">
-                    Ảnh:
-                </label>
-                <ImageUpload image={image} setImage={setImage} />
+
+                <label htmlFor="imageUrl" className="block text-gray-700 font-bold mb-2 mt-4">Link hình ảnh:</label>
+                <input
+                    type="text"
+                    id="imageUrl"
+                    className="shadow bg-secondary appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    value={imageUrl}
+                    onChange={handleImageUrlChange}
+                />
+
+                {imageUrl && (
+                    <div className="mt-4">
+                        <img src={imageUrl} alt="Preview" className="max-w-full h-auto" />
+                    </div>
+                )}
+                
             </div>
             <div className="flex justify-end mt-5">
             <button

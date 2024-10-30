@@ -10,12 +10,6 @@ const FacultySelector = () => {
   const [selectedFaculty, setSelectedFaculty] = useState(null);
   const [selectedMajor, setSelectedMajor] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
-
-  const { register, handleSubmit } = useForm();
-
-  const [newFacultyName, setNewFacultyName] = useState('');
-  const [newMajorName, setNewMajorName] = useState('');
-  const [newCourseName, setNewCourseName] = useState('');
   const { register: registerFaculty, handleSubmit: handleSubmitFaculty } = useForm();
   const { register: registerMajor, handleSubmit: handleSubmitMajor } = useForm();
   const { register: registerCourse, handleSubmit: handleSubmitCourse } = useForm();
@@ -73,19 +67,16 @@ const FacultySelector = () => {
   const handleAddFaculty = (data) => {
     console.log("Thêm khoa:", data.facultyName);
     // ... (logic thêm khoa)
-    setNewFacultyName('');
   };
 
   const handleAddMajor = (data) => {
     console.log("Thêm ngành:", data.majorName, "cho khoa", selectedFaculty.name);
     // ... (logic thêm ngành)
-    setNewMajorName('');
   };
 
   const handleAddCourse = (data) => {
     console.log("Thêm khóa học:", data.courseName, "cho ngành", selectedMajor.name);
     // ... (logic thêm khóa học)
-    setNewCourseName('');
   };
 
   const handleEditFaculty = (facultyId) => {
@@ -214,9 +205,9 @@ const FacultySelector = () => {
   );
 
   return (
-    <div className="grid grid-cols-3 gap-4 overflow-y-auto min-h-screen">
+    <div className="grid grid-cols-3 gap-4 h-full overflow-hidden">
       {/* Cột 1: Danh sách Khoa */}
-      <div className="border-r flex-grow">
+      <div className="border-r flex-grow h-full">
         <div className='flex flex-col items-start mr-3 justify-between text-xl text-ascent-1 pb-2 border-b mb-3 border-[#66666645]'>
           <div className="flex items-center justify-between w-full mb-3">
             <span className="font-bold">Khoa</span> 
@@ -267,7 +258,7 @@ const FacultySelector = () => {
           </div>
         </div>
 
-        <ul className="rounded-md mr-3">
+        <ul className={`rounded-md mr-3 overflow-y-auto ${showAddFacultyForm ? 'h-[80%]' : 'h-[85%]'}`}>
           {filteredFaculties.map((faculty) => (
             <li
               key={faculty.id}
@@ -316,7 +307,7 @@ const FacultySelector = () => {
       </div>
 
       {/* Cột 2: Danh sách Ngành */}
-      <div className="border-r flex-grow">
+      <div className="border-r flex-grow h-full">
           <div className='flex flex-col items-start mr-3 justify-between text-xl text-ascent-1 pb-2 border-b mb-3 border-[#66666645]'>
             <div className="flex items-center justify-between w-full mb-3">
               <span className="font-bold">Ngành</span> 
@@ -370,7 +361,7 @@ const FacultySelector = () => {
         </div>
 
         {selectedFaculty && (
-          <ul className="rounded-md mr-3">
+          <ul className={`rounded-md mr-3 overflow-y-auto ${showAddMajorForm ? 'h-[80%]' : 'h-[85%]'}`}>
             {filteredMajors.map((major) => (
               <li
                 key={major.id}
@@ -419,7 +410,7 @@ const FacultySelector = () => {
       </div>
 
       {/* Cột 3: Danh sách Khóa học */}
-      <div className="gap-4">
+      <div className="gap-4 h-[calc(91vh-8rem)]">
           <div className='flex flex-col items-start mr-3 justify-between text-xl text-ascent-1 pb-2 border-b mb-3 border-[#66666645]'>
             <div className="flex items-center justify-between w-full mb-3">
               <span className="font-bold">Khóa học</span> 
@@ -472,7 +463,7 @@ const FacultySelector = () => {
         </div>
 
         {selectedMajor && (
-          <ul className="rounded-md mr-3">
+          <ul className={`rounded-md mr-3 overflow-y-auto ${showAddCourseForm ? 'h-[80%]' : 'h-[85%]'}`}>
             {filteredCourses.map((course) => (
               <li
                 key={course.id}
