@@ -52,7 +52,6 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     const { cPassword, ...filteredData } = data;
-    console.log(data);
     try {
       setIsSubmitting(true);
       const res = await axiosInstance.post('/auth/register', {
@@ -61,11 +60,12 @@ const Register = () => {
         major: selectedMajor,
         academicYear: selectedCourse,
       });
+      setErrMsg({ status: "success", message: res.data.message });
       setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);
       console.log(error);
-      setErrMsg(error.response.data.message);
+      setErrMsg({ status: "failed", message: error.response.data.message });
     }
   };
 
@@ -142,8 +142,7 @@ const Register = () => {
                   value={selectedMajor}
                   onChange={(e) => {
                     setSelectedMajor(e.target.value);
-                    console.log(e.target.value);
-                    setShowMajorError(false); // Ẩn thông báo lỗi khi người dùng chọn lại
+                    setShowMajorError(false);
                   }}
                   options={[
                     { value: "", label: "Chọn ngành" },
@@ -282,8 +281,6 @@ const Register = () => {
       isValid = false;
     }
 
-    console.log(selectedFaculty, selectedMajor, selectedCourse)
-
     if (isValid) {
       setCurrentStep((prevStep) => prevStep + 1);
     }
@@ -326,9 +323,14 @@ const Register = () => {
               </div>
 
               {errMsg && (
-                <div className="text-red text-center">
-                  {errMsg}
-                </div>
+                <span
+                  className={`text-sm ${errMsg?.status == "failed"
+                    ? "text-[#f64949fe]"
+                    : "text-[#2ba150fe]"
+                    } mt-0.5`}
+                >
+                  {errMsg.message}
+                </span>
               )}
 
               {/* Nút điều hướng */}

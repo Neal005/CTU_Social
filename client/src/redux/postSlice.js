@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from '../api/axiosConfig';
 
-export const getPosts = createAsyncThunk('post/getPosts', async () => {
-  const response = await axiosInstance.get('/posts');
+export const getPosts = createAsyncThunk('post/getPosts', async (searchQuery) => {
+  const query = searchQuery ? `?search=${searchQuery}` : '';
+  const response = await axiosInstance.get(`/posts${query}`);
   return response.data.posts;
 });
 
@@ -16,30 +17,37 @@ export const getSavedPosts = createAsyncThunk('post/getSavedPosts', async (userI
   return response.data.savedPosts;
 });
 
+export const getGroupPosts = createAsyncThunk('post/getGroupPosts', async (groupId) => {
+  const response = await axiosInstance.get(`/group/${groupId}/posts`);
+  return response.data.posts;
+});
+
 export const likePost = createAsyncThunk('post/likePost', async (postId) => {
   const response = await axiosInstance.post(`/posts/like/${postId}`);
-  return { postId, data: response.data };
+  return { postId, data: response.data.post };
 });
 
 export const savePost = createAsyncThunk('post/savePost', async (postId) => {
   const response = await axiosInstance.post(`/posts/save/${postId}`);
-  return { postId, data: response.data };
+  return { postId, data: response.data.post };
 });
 
 export const sharePost = createAsyncThunk('post/sharePost', async (postId) => {
   const response = await axiosInstance.post(`/posts/share/${postId}`);
-  return { postId, data: response.data };
+  // console.log('sharePost response', response.data.post);
+  return { postId, data: response.data.post };
 });
 
 export const reportPost = createAsyncThunk('post/reportPost', async (postId) => {
   const response = await axiosInstance.post(`/posts/report/${postId}`);
-  return { postId, data: response.data };
+  return { postId, data: response.data.post };
 });
 
 const initialState = {
   posts: [],
   userPosts: [],
   savedPosts: [],
+  groupPosts: [],
   status: 'idle',
   error: null
 };
@@ -50,6 +58,9 @@ const postSlice = createSlice({
   reducers: {
     updatePosts: (state, action) => {
       state.posts = action.payload;
+    },
+    updateGroupPosts: (state, action) => {
+      state.groupPosts = action.payload;
     },
     updatePost: (state, action) => {
       const index = state.posts.findIndex(post => post._id === action.payload._id);
@@ -95,16 +106,30 @@ const postSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
+      // group posts
+      .addCase(getGroupPosts.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getGroupPosts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.groupPosts = action.payload;
+      })
+      .addCase(getGroupPosts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
       // like post
       .addCase(likePost.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const { postId, data } = action.payload;
-        const post = state.posts.find((p) => p.id === postId);
+        const post = state.posts.find((p) => p._id === postId);
         if (post) {
           post.likes = data.likes;
+          post.likedBy = data.likedBy;
         }
+        state.status = 'succeeded';
       })
       .addCase(likePost.rejected, (state, action) => {
         state.status = 'failed';
@@ -117,7 +142,7 @@ const postSlice = createSlice({
       .addCase(savePost.fulfilled, (state, action) => {
         state.status = 'succeeded';
         const { postId, data } = action.payload;
-        const post = state.posts.find((p) => p.id === postId);
+        const post = state.posts.find((p) => p._id === postId);
         if (post) {
           post.saves = data.saves;
           post.savedBy = data.savedBy;
@@ -133,9 +158,10 @@ const postSlice = createSlice({
       })
       .addCase(sharePost.fulfilled, (state, action) => {
         const { postId, data } = action.payload;
-        const post = state.posts.find((p) => p.id === postId);
+        const post = state.posts.find((p) => p._id === postId);
         if (post) {
           post.shares = data.shares;
+          post.shareBy = data.shareBy;
         }
       })
       .addCase(sharePost.rejected, (state, action) => {
@@ -148,7 +174,7 @@ const postSlice = createSlice({
       })
       .addCase(reportPost.fulfilled, (state, action) => {
         const { postId, data } = action.payload;
-        const post = state.posts.find((p) => p.id === postId);
+        const post = state.posts.find((p) => p._id === postId);
         if (post) {
           post.reports = data.reports;
         }
@@ -156,5 +182,5 @@ const postSlice = createSlice({
   }
 });
 
-export const { updatePosts, updatePost } = postSlice.actions;
+export const { updatePosts, updatePost, updateGroupPosts } = postSlice.actions;
 export default postSlice.reducer;

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import TextInput from "./TextInput";
 import CustomButton from "./CustomButton";
 import Menu from "./Menu";
@@ -12,17 +12,65 @@ import { Logout } from "../redux/userSlice";
 import { BgImage } from "../assets";
 import { FaRegMessage, FaMessage } from "react-icons/fa6";
 import { IoIosMenu, IoIosNotifications } from "react-icons/io";
+import socket from '../api/socket';
+import { debounce } from 'lodash';
+
+const debouncedSearch = debounce((query, navigate) => {
+  navigate(`/search?search=${query}`);
+}, 500);
 
 const TopBar = (friends) => {
   const { theme } = useSelector((state) => state.theme);
   const { user } = useSelector((state) => state.user);
-  const [showMenu, setShowMenu] = React.useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+
+  const [notificationCount, setNotificationCount] = useState(
+    () => parseInt(localStorage.getItem("notificationCount")) || user?.notifications.length
+  );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+
+
+  const handleInputChange = (e) => {
+    const searchQuery = e.target.value;
+    if (location.pathname === "/search") {
+      debouncedSearch(searchQuery, navigate);
+    }
+  };
+
+  useEffect(() => {
+    if (user && user.notifications) {
+      const unreadNotifications = user.notifications.filter((n) => !n.isRead);
+      const initialNotificationCount = parseInt(localStorage.getItem("notificationCount")) || unreadNotifications.length;
+
+      setNotificationCount(initialNotificationCount);
+      localStorage.setItem("notificationCount", initialNotificationCount);
+    }
+
+    socket.on("getNotification", (notification) => {
+      console.log('getNotification', notification);
+      setNotificationCount((prevCount) => {
+        const newCount = prevCount + 1;
+        localStorage.setItem("notificationCount", newCount);
+        return newCount;
+      });
+    });
+
+    return () => {
+      socket.off('getNotification');
+    };
+  }, [user]);
+
+  useEffect(() => {
+    console.log('re-render component', notificationCount);
+  }, [notificationCount]);
 
   const handleTheme = () => {
     const themeValue = theme === "light" ? "dark" : "light";
@@ -30,12 +78,18 @@ const TopBar = (friends) => {
     dispatch(SetTheme(themeValue));
   };
 
-  const handleSearch = async (data) => { };
+  const handleSearch = async (data) => {
+    const searchQuery = data.search;
+
+    if (!searchQuery) return;
+
+    navigate(`/search?search=${searchQuery}`);
+  };
 
   return (
-    <div className='topbar w-full flex items-center justify-between py-3 md:py-6 px-4 bg-primary'>
+    <div className='flex items-center justify-between w-full px-4 py-3 topbar md:py-6 bg-primary'>
       <div>
-        <Link to='/' className='flex gap-2 items-center'>
+        <Link to='/' className='flex items-center gap-2'>
           <img src={BgImage} className='hidden lg:flex w-14 h-14' />
           <span className='hidden lg:flex text-xl md:text-2xl text-[#065ad8] font-semibold'>
             CTU Social
@@ -43,8 +97,8 @@ const TopBar = (friends) => {
         </Link>
       </div>
       {/* Mobile Menu Icon */}
-      <div className='lg:hidden text-2xl absolute left-4 flex items-center'>
-        <Link to='/' className='flex gap-2 items-center'>
+      <div className='absolute flex items-center text-2xl lg:hidden left-4'>
+        <Link to='/' className='flex items-center gap-2'>
           <img src={BgImage} className='lg:hidden w-9 h-9' />
         </Link>
         <div className='relative'>
@@ -61,31 +115,39 @@ const TopBar = (friends) => {
       )}
 
       <form
-        className='hidden md:flex items-center justify-center'
+        className='items-center justify-center hidden md:flex'
         onSubmit={handleSubmit(handleSearch)}
       >
         <TextInput
           placeholder='Tìm kiếm...'
           styles='w-[10rem] lg:w-[30rem]  rounded-l-full py-3 '
-          register={register("search")}
+          {...register("search", {
+            onKeyDown: (e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSubmit(handleSearch)();
+              }
+            },
+            onChange: handleInputChange,
+          })}
         />
         <CustomButton
-          title='Search'
+          title='Tìm kiếm'
           type='submit'
           containerStyles='bg-blue hover:bg-sky text-white px-3 py-2.5 mt-2 rounded-r-full'
         />
       </form>
 
       {/* ICONS */}
-      <div className='flex gap-4 items-center text-ascent-1 text-md md:text-xl'>
+      <div className='flex items-center gap-4 text-ascent-1 text-md md:text-xl'>
         <button onClick={() => handleTheme()}>
           {theme ? <BsMoon /> : <BsSunFill />}
         </button>
 
-        <div className='flex relative'>
+        <div className='relative flex'>
           <Link to={`/messages/${user?._id}`}>
             {user?.messages?.length > 0 && (
-              <div className='absolute inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red border-3 border-white rounded-full -top-2 -end-2'>
+              <div className='absolute inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white border-white rounded-full bg-red border-3 -top-2 -end-2'>
                 <span className='text-sm text-white'>{user?.messages}</span>
               </div>
             )}
@@ -99,18 +161,18 @@ const TopBar = (friends) => {
 
         </div>
 
-        <div className='flex relative'>
+        <div className='relative flex'>
           <Link to={`/notifications/${user?._id}`}>
-            {user?.messages?.length > 0 && (
-                <div className='absolute inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red border-3 border-white rounded-full -top-2 -end-2'>
-                  <span className='text-sm text-white'>{user?.notifications}</span>
-                </div>
-              )}
-              {user?.notifications > 0 ? (
-                <IoIosNotifications size={24} color='#065ad8' />
-              ) : (
-                <IoNotificationsOutline size={24} />
-              )}
+            {notificationCount > 0 && (
+              <div className='absolute inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white border-white rounded-full bg-red border-3 -top-2 -end-2'>
+                <span className='text-sm text-white'>{notificationCount}</span>
+              </div>
+            )}
+            {notificationCount > 0 ? (
+              <IoIosNotifications size={24} color='#065ad8' />
+            ) : (
+              <IoNotificationsOutline size={24} />
+            )}
           </Link>
         </div>
 

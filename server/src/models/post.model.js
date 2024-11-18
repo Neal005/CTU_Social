@@ -9,12 +9,6 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: false
     }],
-    files: [
-        {
-            type: String,
-            required: false
-        }
-    ],
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -39,6 +33,10 @@ const PostSchema = new mongoose.Schema({
         enum: ['public', 'private'],
         default: 'public'
     },
+    group: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group'
+    }
 },
     {
         timestamps: true
