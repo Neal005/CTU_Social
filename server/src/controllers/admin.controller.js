@@ -14,6 +14,7 @@ const Tag = require('../models/tag.model');
 const Comment = require('../models/comment.model');
 const Conversation = require('../models/conversation.model');
 const Message = require('../models/message.model');
+const userModel = require('../models/user.model');
 const unlinkFile = util.promisify(fs.unlink);
 
 
@@ -621,6 +622,7 @@ const acceptGroupRequest = async (req, res) => {
             name: groupRequest.name,
             owner: groupRequest.user._id,
             members: [groupRequest.user._id],
+            description: groupRequest.description,
         });
 
         await newGroup.save();
